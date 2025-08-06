@@ -1,0 +1,31 @@
+class Solution {
+public:
+// having specfic sum , or some condition , like here it is k number of odd , 
+// beaware for negative targets.
+
+    int atmostk(vector<int> &nums , int k){ // function count atmostK , optimised with number of nice subaaray ending at right
+        int totalCnt = 0 , left = 0;
+        int oddCnt = 0;
+        for(int right = 0 ; right < nums.size() ; right++){
+            if(nums[right] & 1){
+                oddCnt++;
+            }
+
+            while(oddCnt > k){ // moving left to valid position 
+                if(nums[left] & 1){
+                    oddCnt--;
+                }
+                left++;
+            }
+
+            totalCnt += right - left + 1; // total nunmber of desired subarray endint at right
+        }
+
+        return totalCnt;
+    }
+
+
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        return atmostk(nums , k) - atmostk(nums , k - 1);
+    }       
+};
