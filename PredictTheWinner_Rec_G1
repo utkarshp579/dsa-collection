@@ -1,4 +1,4 @@
-Leetcode 486.     Not a game Dp
+Leetcode 486.     Not a game Dp, Need to revise Game DP. from Vivek Gupta Playlist.
 
 int helper(int i, int j, vector<int>& nums) {
         if (i == j) return nums[i];
