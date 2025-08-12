@@ -1,0 +1,37 @@
+// This Question is also Maximal Rectangle
+// My approach , 
+// Optimised approach involes one vector , and one iteration ofoop , computing NSE , PSE in one Go.
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        long long ans = 0 , n = heights.size() ;
+        vector<int> prev(n , -1) , next(n , n); 
+        stack<int> st;
+        for(int i = 0 ; i < n ; i++){ // prev smaller , equal is not counted.
+            while(!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+
+            if(!st.empty()) prev[i] = st.top();
+
+            // if(!st.empty() && heights[st.top()] != heights[i]) st.push(i);
+            st.push(i);
+        }
+
+        stack<int>().swap(st);
+
+        for(int i = n - 1 ; i >= 0 ; i--){ // next smaller , equal is not included. 
+            while(!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+
+            if(!st.empty()) next[i] = st.top();
+
+            // if(!st.empty() && heights[st.top()] != heights[i]) st.push(i);
+            st.push(i);
+        }
+
+        for(int i = 0 ; i < n ; i++){
+            ans = max( ans  ,  heights[i]* 1ll * ( next[i] - prev[i] - 1 ) );
+        }
+
+        return ans;
+    }
+};
