@@ -1,0 +1,261 @@
+Sentence Similarity
+
+Determine if two sentences are similar. Two sentences are similar if they have the same length and each pair of corresponding words in the two sentences is similar. The similarity between words is defined by the provided list of similar word pairs. A word is always similar to itself.
+
+For example, if we have the list of similar word pairs as [("great", "good"), ("acting","drama"), ("skills","talent")], then the sentences "You have great acting skills" and "You have good drama talent" are similar.
+
+Examples:
+
+sentence1 = ["Let's", "code", "in", "Python"]
+
+sentence2 = ["Let's", "program", "in", "Python"]
+
+similarPairs = [
+
+("code", "program"),
+
+]
+
+output: true
+
+sentence1 = ["I", "love", "to", "play", "football"]
+
+sentence2 = ["I", "love", "playing", "soccer"]
+
+similarPairs = [("play", "playing"), ("football", "soccer")]
+
+output: false, different sentence lengths
+
+sentence1 = ["Do", "you", "like", "coffee"]
+
+sentence2 = ["Do", "you", "love", "coffee"]
+
+similarPairs = [
+
+("like", "enjoy"),
+
+("coffee", "tea"),
+
+]
+
+output: false, "like" is not similar to "love" based on the given pairs.
+
+sentence1 = ["I", "really", "love", "leetcode", "and", "apples"]
+
+sentence2 = ["I", "so", "like", "codesignal", "and", "oranges"]
+
+similarPairs = [
+
+("very", "so"),
+
+("love", "adore"),
+
+("really", "very"),
+
+("leetcode", "codesignal"),
+
+("apples", "oranges"),
+
+("like", "adore"),
+
+]
+
+output: true, "like" is similar to "love", because both are similar to "adore".
+
+#include <iostream>
+
+#include <vector>
+
+#include <string>
+
+#include <unordered_map>
+
+#include <unordered_set>
+
+#include <utility>
+
+
+// // ex
+
+// 10^4 ==> Similar Pairs
+
+
+sentence1 = ["I", "really", "love", "leetcode", "and", "apples"]
+
+sentence2 = ["I", "so", "like", "codesignal", "and", "oranges"]
+
+
+
+similarPairs = [
+
+("very", "so"),
+
+("love", "adore"),
+
+("really", "very"),
+
+("leetcode", "codesignal"),
+
+("apples", "oranges"),
+
+("like", "adore"),
+
+]
+
+class DSU {
+
+unordered_map<string , string> parent;
+
+unordered_map<string , int> rank;
+
+public:
+
+DSU(vector<std::pair<std::string, std::string>>& pairs) {
+
+parent.clear();
+
+rank.clear();
+
+
+for(auto it : pairs){
+
+}
+
+}
+
+
+int find(int x) {
+
+if (parent[x] != x)
+
+parent[x] = find(parent[x]); // Path compression
+
+return parent[x];
+
+}
+
+
+void unite(int x, int y) {
+
+int px = find(x);
+
+int py = find(y);
+
+
+if (px == py) return;
+
+
+if (rank[px] < rank[py]) {
+
+parent[px] = py;
+
+} else if (rank[px] > rank[py]) {
+
+parent[py] = px;
+
+} else {
+
+parent[py] = px;
+
+rank[px]++;
+
+}
+
+}
+
+};
+
+
+
+
+bool areSentencesSimilar(const std::vector<std::string>& sentence1,
+
+const std::vector<std::string>& sentence2,
+
+const std::vector<std::pair<std::string, std::string>>& similarPairs) {+
+
+if(sentence1.size() != sentence2.size()) return false;
+
+
+// unordered_map<string, string> parent;
+
+// unordered_map<string, int> rank;
+
+
+// DSU formation Code here
+
+int n = sentence1.size();
+
+for(int i = 0 ; i < n ; i++){
+
+if(sentence1[i] != sentence2[i]){
+
+if(parent[sentence1[i]] != parent[sentence2[i]]) return false;
+
+}
+
+}
+
+
+return true;
+
+}
+
+
+// comment out main() before running tests
+
+int main() {
+
+// debug your code below
+
+std::vector<std::string> sentence1 = {"Let's", "code", "in", "Python"};
+
+std::vector<std::string> sentence2 = {"Let's", "program", "in", "Python"};
+
+std::vector<std::pair<std::string, std::string>> similarPairs = {{"code", "program"}};
+
+
+std::cout << std::boolalpha << areSentencesSimilar(sentence1, sentence2, similarPairs) << std::endl; // Output: true
+
+
+return 0;
+
+}
+
+
+
+
+
+// map(string , set)
+
+// very => so , really ,
+
+// love => adore , like
+
+// leetcode => codesignal
+
+// apples => oranges
+
+
+
+
+
+// unordered_set => very , so , love , adore ,
+
+// parent ==> (very , very ) , (so , very) , (love , love) , (adore , love)
+
+
+// unordered_map<string, unordered_set<string>>
+
+
+// very = so ,
+
+// love = adore
+
+
+// love = adore = like
+
+// so = really
+
+
+// a = b , b = c , > a = c
