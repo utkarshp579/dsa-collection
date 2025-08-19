@@ -1,0 +1,64 @@
+Approach 1 :- Multiset & Lower_bound
+Approach 2 :- Merge Sort , Similar to Count Inversion
+
+
+
+class Solution {
+public:
+    void merge(int l , int r ,vector<pair<int,int>> &v , vector<int> &count  ){
+        vector<pair<int,int>> dummy(r - l + 1); // creating dummy node for merge.
+        int mid = l + (r - l)/2;
+        int i = l , j = mid + 1 , k = 0;
+
+        while(i <= mid && j <= r){
+            if(v[i].first <= v[j].first){
+                dummy[k++] = v[j++];   // sorting reverse , i is smaller but we are filling j.
+            }else{
+                count[v[i].second] += r - j + 1 ;// as i is bigger than j , so it will be greater than all element of j , means they are smaller
+                dummy[k++] = v[i++];
+            }
+        }
+
+        // filling remaining
+        while(i <= mid){
+            dummy[k++] = v[i++];
+        }
+        while(j <= r){
+            dummy[k++] = v[j++];
+        }
+
+
+        // filling value to v;
+        for(int i = l ; i <= r ; i++){
+            v[i] = dummy[i - l];
+        }
+
+    }
+
+    void mergesort(int l , int r ,vector<pair<int,int>> &v , vector<int> &count  ){
+        if(l >= r) return;
+        int mid = l + (r - l )/2;
+
+        mergesort(l , mid , v , count);
+        mergesort(mid + 1 , r , v , count);
+
+        merge(l , r , v , count);
+
+    }
+
+    vector<int> countSmaller(vector<int>& nums) {
+        int n = nums.size();
+        vector<pair<int,int>> v;
+
+        for(int i = 0 ; i < n ; i++){
+            v.push_back({nums[i] , i}); // to fill inversion count in correct number at correct index.  
+            // first value for merge sort , second for filling answer.
+        }
+
+        vector<int> count(n , 0);
+
+        mergesort(0 , n - 1 , v , count);
+
+        return count;
+    }
+};
