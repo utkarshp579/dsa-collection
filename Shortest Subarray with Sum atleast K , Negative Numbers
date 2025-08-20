@@ -1,0 +1,37 @@
+class Solution {
+public:
+// maintain monotonic stack , or curve , and ompress if sum passes k , so compression is not possible , so we use deque
+    int shortestSubarray(vector<int>& nums, int k) {
+        int n = nums.size();
+        deque<pair<int, long long>> dq; // index , sum
+        long long sum = 0;
+        int ans = INT_MAX;
+
+        for(int i = 0 ; i < n ; i++){
+            sum += nums[i];
+
+            if(sum >= k) ans = min(ans , i + 1); // sum from start of window.
+
+            // reduce window size , to find minimum window with sum >= k
+            pair<int , int> curr = {INT_MIN , INT_MIN};
+            while(!dq.empty() && sum - dq.front().second >= k){
+                curr = dq.front();
+                dq.pop_front();
+            }
+
+            // calculate new Shortest if Possible
+            if(curr.second != INT_MIN){
+                ans = min(ans , i - curr.first);
+            }
+
+            // maintain monotonically increasing order of deque 
+            while(!dq.empty() && sum <= dq.back().second){ 
+                dq.pop_back();
+            }
+            dq.push_back({i , sum}); // push ith sum
+
+        }
+
+        return ans == INT_MAX ? -1 : ans;
+    }
+};
