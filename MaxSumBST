@@ -1,0 +1,39 @@
+
+class Solution {
+public:
+    long long res = 0;
+
+    tuple<bool, long long, long long, long long> helper(TreeNode* root) {
+        if (!root) {
+            // Empty tree → valid BST, min=+∞, max=-∞, sum=0
+            return {true, LLONG_MAX, LLONG_MIN, 0};
+        }
+
+        auto [leftIsBst, leftMin, leftMax, leftSum] = helper(root->left);
+        auto [rightIsBst, rightMin, rightMax, rightSum] = helper(root->right);
+
+        // If either side is not BST → prune early
+        if (!leftIsBst || !rightIsBst) {
+            return {false, 0, 0, 0}; // min/max/sum not used
+        }
+
+        // Validate BST condition for current node
+        if (root->val <= leftMax || root->val >= rightMin) {
+            return {false, 0, 0, 0}; // prune
+        }
+
+        // Now it's a BST
+        long long minVal = min((long long)root->val, leftMin);
+        long long maxVal = max((long long)root->val, rightMax);
+        long long currSum = leftSum + rightSum + root->val;
+
+        res = max(res, currSum);
+
+        return {true, minVal, maxVal, currSum};
+    }
+
+    int maxSumBST(TreeNode* root) {
+        helper(root);
+        return (int)res;
+    }
+};
