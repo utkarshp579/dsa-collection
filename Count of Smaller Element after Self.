@@ -14,7 +14,7 @@ public:
             if(v[i].first <= v[j].first){
                 dummy[k++] = v[j++];   // sorting reverse , i is smaller but we are filling j.
             }else{
-                count[v[i].second] += r - j + 1 ;// as i is bigger than j , so it will be greater than all element of j , means they are smaller
+                count[v[i].second] += r - j + 1 ;// as i is bigger than j , so it will be greater than all element of j , means they are smaller , Key Line
                 dummy[k++] = v[i++];
             }
         }
