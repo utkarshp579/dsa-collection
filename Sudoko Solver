@@ -1,0 +1,57 @@
+class Solution {
+public:
+    bool isSafe(vector<vector<char>> &board, int i, int j, int val) {
+    // Check the row
+    for (int col = 0; col < 9; ++col) {
+        if (board[i][col] == val) {
+            return false;
+        }
+    }
+
+    // Check the column
+    for (int row = 0; row < 9; ++row) {
+        if (board[row][j] == val) {
+            return false;
+        }
+    }
+
+    // Check the 3x3 subgrid
+    int startRow = i - i % 3;
+    int startCol = j - j % 3;
+    for (int row = 0; row < 3; ++row) {
+        for (int col = 0; col < 3; ++col) {
+            if (board[row + startRow][col + startCol] == val) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+
+    bool solve(vector<vector<char>>& board) {
+        for(int i = 0 ; i < 9 ; i++){
+            for(int j = 0 ; j < 9 ; j++){
+                if(board[i][j] == '.'){
+                    for(char val = '1' ; val <= '9' ;val++){
+                        if(isSafe(board , i , j , val)){
+                            board[i][j] = val;
+
+                            if(solve(board) == true)// solve for next empty place
+                                return true;
+                            else board[i][j] = '.';// next val might fit
+                        }
+
+                    }
+                    return false; // if dot not filled. , in case of digits this not excuted.   
+                }
+            }
+        }
+        return true;// when board is traversed and fill and contain no 'dot'
+    }
+
+    void solveSudoku(vector<vector<char>> &board){
+        solve(board);
+    }
+};
