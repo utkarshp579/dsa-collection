@@ -1,0 +1,25 @@
+Good :- BFS and Parent Pointer.
+Better :- LCA and dist
+
+
+Optimal
+int ans = -1; // will store final distance between a and b
+
+int findDistDFS(Node* root, int a, int b) {
+    if (root == NULL) return -1;
+
+    if (root->data == a || root->data == b)
+        return 0; // found one target here
+
+    int left = findDistDFS(root->left, a, b);
+    int right = findDistDFS(root->right, a, b);
+
+    if (left != -1 && right != -1) {
+        ans = left + right + 2; // +2 because both distances are from children to current node
+        return -1; // value doesn't matter now, answer stored
+    }
+
+    if (left != -1) return left + 1;
+    if (right != -1) return right + 1;
+    return -1;
+}
