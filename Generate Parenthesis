@@ -1,0 +1,27 @@
+class Solution {
+public:
+int nn;
+vector<string> ans;
+    void solve(string &str , int charge ){
+        if(charge == 0 && str.size() == nn){
+            ans.push_back(str);
+            return;
+        }
+
+        if(str.size() >= nn || charge < 0) return;
+        str += '(';
+        solve( str, charge + 1);
+        str.pop_back();
+        str += ')';
+        solve(str  , charge - 1);
+        str.pop_back();
+    }
+
+    vector<string> generateParenthesis(int n) {
+        nn = 2 * n;
+        ans = vector<string>();
+        string str = "(";
+        solve(str , 1);
+        return ans;
+    }
+};
