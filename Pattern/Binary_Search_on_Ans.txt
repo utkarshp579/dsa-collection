@@ -1,0 +1,13 @@
+Why important ? 
+Helps in optimization-type problems (“find minimum/max possible value satisfying a condition”).
+Trains you to convert problems into monotonic search space — an advanced skill.
+
+
+Core Idea
+- Instead of searching in array → you search in range of possible answers.
+- You decide a predicate function can(mid) → returns true/false.
+- Use binary search to minimize or maximize the answer satisfying condition.
+
+
++ After checking monotonicity property , find search space of it. 
++ Check how can reduce search space. 
